@@ -14,6 +14,10 @@ const suits = ["clubs", "diamonds", "hearts", "spades"];
 const ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace"];
 
 const playerCards = [];
+const dealerCards = [];
+
+let userTotal = 0;
+let dealerTotal = 0;
 
 const generateCard = (suit, rank, value) => {
     const divCard = document.createElement('div');
@@ -27,6 +31,8 @@ const generateCard = (suit, rank, value) => {
 
     divCard.appendChild(cardRank);
     divCard.appendChild(cardSuit);
+
+    divCard.style.border = "1px solid black";
 
     return divCard;
 }
@@ -67,6 +73,15 @@ const updatePlayerCards = () => {
     }
 }
 
+const updateDealerCards = () => {
+    divDealerCards.innerHTML = "";
+    if (dealerCards.length > 0) {
+        dealerCards.forEach(card => {
+            divDealerCards.appendChild(generateCard(card.suit, card.rank, card.value));
+        });
+    }
+}
+
 const resetGame = () => {
     generateDeck();
     shuffleDeck(deckList);
@@ -76,27 +91,46 @@ const resetGame = () => {
         btn.disabled = false;
     });
     btnHit.disabled = true;
+    userTotal = 0;
+    dealerTotal = 0; 
 }
 
 const checkIfWon = () => {
-    let total = 0;
     const newMsg = document.createElement('p');
     playerCards.forEach(card => {
-        total += card.value;
+        userTotal += card.value;
     });
-    if (total === 21) {
+    if (userTotal === 21) {
         console.log('BLACKJACK');
         newMsg.textContent = "BLACKJACK";
         divMessages.appendChild(newMsg);
         resetGame();
-    } else if (total > 21) {
+    } else if (userTotal > 21) {
         console.log('bust');
         newMsg.textContent = 'BUST';
         divMessages.appendChild(newMsg);
         resetGame();
     } else {
-        console.log("keep playing " + total);
+        console.log("keep playing " + userTotal);
     }
+}
+
+const handleDealerTurn = () => {
+    const newMsg = document.createElement('p');
+    dealerCards.forEach(card => {
+        dealerTotal += card.value;
+    });
+    if(dealerTotal <= 11){
+        dealerCards.push(deckList.pop());
+        newMsg.textContent = "Dealer hits";
+    }
+    updateDealerCards();
+}
+
+const stand = (player) => {
+    const newMsg = document.createElement('p');
+    newMsg.textContent = player + " is standing."
+    divMessages.appendChild(newMsg);
 }
 
 //start of game:
@@ -105,9 +139,16 @@ resetGame();
 
 btnDeal.addEventListener("click", () => {
     divMessages.innerHTML = "";
+
+    //Deal player cards
     playerCards.push(deckList.pop());
     playerCards.push(deckList.pop());
     updatePlayerCards();
+    //Deal dealer cards
+    dealerCards.push(deckList.pop());
+    dealerCards.push(deckList.pop());
+    updateDealerCards();
+   
     checkIfWon();
     btnDeal.disabled = true;
     btnHit.disabled = false;
@@ -116,7 +157,13 @@ btnDeal.addEventListener("click", () => {
 btnHit.addEventListener('click', () => {
     playerCards.push(deckList.pop());
     updatePlayerCards();
+    handleDealerTurn();
     checkIfWon();
+});
+
+btnStand.addEventListener('click', () => {
+    handleDealerTurn();
+    stand("Player");
 });
 
 
