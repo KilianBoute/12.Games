@@ -26,7 +26,7 @@ const generateCard = (suit, rank, value) => {
 
     divCard.appendChild(cardSuit);
     divCard.appendChild(cardRank);
-    
+
     return divCard;
 } 
 
@@ -57,10 +57,25 @@ const shuffleDeck = (array) => {
 }
 
 const updatePlayerCards = () => {
+    divPlayerCards.innerHTML = "";
     if(playerCards.length > 0){
         playerCards.forEach(card => {
             divPlayerCards.appendChild(generateCard(card.suit, card.rank, card.value));
         });
+    }
+}
+
+const checkIfWon = () => {
+    let total = 0;
+    playerCards.forEach(card => {
+        total += card.value;
+    });
+    if(total === 21){
+        console.log('BLACKJACK');
+    } else if(total > 21){
+        console.log('bust');
+    } else {
+        console.log("keep playing " + total);
     }
 }
 
@@ -72,6 +87,13 @@ btnDeal.addEventListener("click", () =>{
     playerCards.push(deckList.pop());
     playerCards.push(deckList.pop());
     updatePlayerCards();
+    checkIfWon();
+});
+
+btnHit.addEventListener('click', () => {
+    playerCards.push(deckList.pop());
+    updatePlayerCards();
+    checkIfWon();
 });
 
 
