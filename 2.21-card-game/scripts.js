@@ -1,12 +1,34 @@
 const main = document.querySelector('main');
-const dealerCards = document.querySelector(`.dealerCardsClass`);
-const deck = document.querySelector(`.deckClass`);
-const playerCards = document.querySelector(`.playerCardsClass`);
+const divDealerCards = document.querySelector(`.dealer-cards`);
+const divDeck = document.querySelector(`.deck`);
+const divPlayerCards = document.querySelector(`.player-cards`);
+
+const btnDeal = document.querySelector('#btnDeal');
+const btnHit = document.querySelector('#btnHit');
+const btnStand = document.querySelector('#btnStand');
 
 const deckList = [];
 
 const suits = ["clubs", "diamonds", "hearts", "spades"];
 const ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace"];
+
+const playerCards = [];
+
+const generateCard = (suit, rank, value) => {
+    const divCard = document.createElement('div');
+        divCard.className = 'card';
+    const cardSuit = document.createElement('p');
+        cardSuit.className = 'card-suit';
+        cardSuit.textContent = suit;
+    const cardRank = document.createElement('p');
+        cardRank.className = 'card-rank';
+        cardRank.textContent = rank;
+
+    divCard.appendChild(cardSuit);
+    divCard.appendChild(cardRank);
+    
+    return divCard;
+} 
 
 const generateDeck = () => {
     suits.forEach(suit => {
@@ -32,11 +54,24 @@ const shuffleDeck = (array) => {
       array[i] = array[j];
       array[j] = temp;
     }
-  }
+}
+
+const updatePlayerCards = () => {
+    if(playerCards.length > 0){
+        playerCards.forEach(card => {
+            divPlayerCards.appendChild(generateCard(card.suit, card.rank, card.value));
+        });
+    }
+}
 
 generateDeck();
 shuffleDeck(deckList);
 console.log(deckList);
 
+btnDeal.addEventListener("click", () =>{
+    playerCards.push(deckList.pop());
+    playerCards.push(deckList.pop());
+    updatePlayerCards();
+});
 
 
