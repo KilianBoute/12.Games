@@ -31,6 +31,7 @@ const generateCard = (suit, rank, value) => {
 } 
 
 const generateDeck = () => {
+    deckList.length = 0;
     suits.forEach(suit => {
         ranks.forEach(rank => {
             let value;
@@ -65,6 +66,13 @@ const updatePlayerCards = () => {
     }
 }
 
+const resetGame = () => {
+    generateDeck;
+    shuffleDeck(deckList);
+    playerCards.length = 0;
+    divPlayerCards.innerHTML = "";
+}
+
 const checkIfWon = () => {
     let total = 0;
     playerCards.forEach(card => {
@@ -74,6 +82,7 @@ const checkIfWon = () => {
         console.log('BLACKJACK');
     } else if(total > 21){
         console.log('bust');
+        resetGame();
     } else {
         console.log("keep playing " + total);
     }
