@@ -16,7 +16,7 @@ const ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "K
 const playerCards = [];
 const dealerCards = [];
 
-let userTotal = 0;
+let playerTotal = 0;
 let dealerTotal = 0;
 
 // let dealerWantsHit = false;
@@ -24,8 +24,10 @@ let dealerTotal = 0;
 // let dealerHasWon = false;
 // let dealerHasBust = false;
 
-statusList = ["new", "hit", "stand", "won", "bust"];
-dealerStatus = statusList[0];
+const statusList = ["new", "hit", "stand", "won", "bust"];
+let dealerStatus = statusList[0];
+let playerStatus = statusList[0];
+let gameIsDone = false;
 
 const generateCard = (suit, rank, value) => {
     const divCard = document.createElement('div');
@@ -43,6 +45,12 @@ const generateCard = (suit, rank, value) => {
     divCard.style.border = "1px solid black";
 
     return divCard;
+}
+
+const generateMessage = (message) => {
+    const newMessage = document.createElement('p');
+        newMessage.textContent = (message);
+    divMessages.prepend(newMessage);
 }
 
 const generateDeck = () => {
@@ -90,41 +98,25 @@ const updateDealerCards = () => {
     }
 }
 
+const resetButtons = () => {
+    btnDeal.disabled = false;
+    btnHit.disabled = true;
+    btnStand.disabled = true;
+}
+
 const resetGame = () => {
     divMessages.innerHTML = "";
     divPlayerCards.innerHTML = "";
     divDealerCards.innerHTML = "";
     playerCards.length = 0;
     dealerCards.length = 0;
-    btnDeal.disabled = false;
-    btnHit.disabled = true;
-    btnStand.disabled = true;
-    userTotal = 0;
+    resetButtons();
+    playerTotal = 0;
     dealerTotal = 0; 
+    playerStatus = statusList[0];
+    dealerStatus = statusList[0];
     generateDeck();
     shuffleDeck(deckList);
-}
-
-const checkIfWon = () => {
-    const newMsg = document.createElement('p');
-    userTotal = 0;
-    playerCards.forEach(card => {
-        userTotal += card.value;
-    });
-    if (userTotal === 21) {
-        console.log('BLACKJACK');
-        newMsg.textContent = "BLACKJACK";
-        divMessages.appendChild(newMsg);
-    } else if (userTotal > 21) {
-        console.log('bust');
-        newMsg.textContent = 'BUST';
-        divMessages.appendChild(newMsg);
-        btnDeal.disabled = false;
-        btnHit.disabled = true;
-        btnStand.disabled = true;
-    } else {
-        console.log("keep playing " + userTotal);
-    }
 }
 
 const stand = (player) => {
@@ -133,16 +125,62 @@ const stand = (player) => {
     divMessages.appendChild(newMsg);
 }
 
-//Dealer logic:
-const handleDealerTurn = () => {
-    const newMsg = document.createElement('p');
-
-    dealerCards.forEach(card => {
-        dealerTotal += card.value;
+const setPlayerStatus = () => {
+    //get total player card value:
+    let newTotal = 0;
+    playerCards.forEach(card => {
+        newTotal += card.value;
     });
-    console.log(dealerTotal);
+    playerTotal = newTotal;
 
-    if(dealerTotal < 14 || dealerTotal < userTotal){
+    //Check if player has won or bust already:
+    if (playerTotal === 21) {
+        playerStatus = statusList[3];
+    } else if (playerTotal > 21) {
+        playerStatus = statusList[4];
+    } else {
+        console.log("keep playing " + playerTotal);
+    }
+
+    console.log("player: " + playerStatus)
+}
+
+const handlePlayerTurn = () => {
+    switch(playerStatus){
+        case statusList[0]:
+            console.log('All ok');
+            generateMessage("You have " + playerTotal + ".");
+            break;
+        case statusList[3]:
+            console.log('21');
+            generateMessage("Blackjack!");
+            generateMessage("You have won!");
+            generateMessage("Select deal to play again.");
+            resetButtons();
+            gameIsDone = true;
+            break;    
+        case statusList[4]:
+            console.log('BUST');
+            generateMessage("Bust!");
+            generateMessage("You have lost.");
+            generateMessage("Select deal to play again.");
+            resetButtons();
+            gameIsDone = true;
+            break;
+        default: return;
+    }
+}
+
+
+//Dealer logic:
+const setDealerStatus = () => {
+    let newTotal = 0;
+    dealerCards.forEach(card => {
+        newTotal += card.value;
+    });
+    dealerTotal = newTotal;
+
+    if(dealerTotal < 14 || dealerTotal < playerTotal){
         dealerStatus = statusList[1];
     } else if(dealerTotal > 14 && dealerTotal < 21){
         dealerStatus = statusList[2];
@@ -151,8 +189,35 @@ const handleDealerTurn = () => {
     } else if(dealerTotal > 21){
         dealerStatus = statusList[4];
     }
-    console.log(dealerStatus);
+
+    console.log("Dealer: " + dealerStatus);
 } 
+
+const handleDealerTurn = () => {
+switch(dealerStatus){
+    case statusList[1]:
+        break;
+    case statusList[2]:
+        break;
+    case statusList[3]:
+        generateMessage("Dealer has 21!");
+        generateMessage("You have lost.");
+        generateMessage("Select deal to play again.");
+        resetButtons();
+        gameIsDone = true;
+        break;
+    case statusList[4]:
+        generateMessage("Dealer has bust!");
+        generateMessage("You have won.");
+        generateMessage("Select deal to play again.");
+        resetButtons();
+        gameIsDone = true;
+        break;
+    default: return;
+}
+}
+
+
 
 // const handleDealerTurn = () => {
 //     const newMsg = document.createElement('p');
@@ -160,7 +225,7 @@ const handleDealerTurn = () => {
 //     dealerCards.forEach(card => {
 //         dealerTotal += card.value;
 //     });
-//     if(dealerTotal <= 14 || dealerTotal < userTotal){
+//     if(dealerTotal <= 14 || dealerTotal < playerTotal){
 //         dealerCards.push(deckList.pop());
 //         handleDealerTurn();
 //         newMsg.textContent = "Dealer hits";
@@ -174,7 +239,7 @@ const handleDealerTurn = () => {
 // }
 //
 
-
+////////////////////////////////////////////////////////////////
 //start of game:
 resetGame();
 
@@ -191,10 +256,14 @@ btnDeal.addEventListener("click", () => {
     updateDealerCards();
 // Optional add delay to dealer turn:
 //    setTimeout(() => {
-        handleDealerTurn();
+//    setDealerStatus();
 //    }, 3000);
    
-    checkIfWon();
+    setPlayerStatus();
+    setDealerStatus();
+
+    handlePlayerTurn();
+
     btnDeal.disabled = true;
     btnHit.disabled = false;
     btnStand.disabled = false;
@@ -205,14 +274,17 @@ btnHit.addEventListener('click', () => {
     updatePlayerCards();
 // Optional add delay to dealer turn:
 //    setTimeout(() => {
-        handleDealerTurn();
+        // setDealerStatus();
 //    }, 3000);
-    checkIfWon();
+    setPlayerStatus();
+    setDealerStatus();
+
+    handlePlayerTurn();
 });
 
 btnStand.addEventListener('click', () => {
     stand("Player");
-    handleDealerTurn();
+    setDealerStatus();
 });
 
 
