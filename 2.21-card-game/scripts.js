@@ -25,17 +25,24 @@ let playerStatus = statusList[0];
 let gameIsDone = false;
 
 const generateCard = (suit, rank, value) => {
-    const divCard = document.createElement('div');
-    divCard.className = 'card';
-    const cardSuit = document.createElement('p');
-    cardSuit.className = 'card-suit';
-    cardSuit.textContent = suit;
-    const cardRank = document.createElement('p');
-    cardRank.className = 'card-rank';
-    cardRank.textContent = rank;
+    // TEXT BASED CARDS:
+    // const divCard = document.createElement('div');
+    // divCard.className = 'card';
+    // const cardSuit = document.createElement('p');
+    // cardSuit.className = 'card-suit';
+    // cardSuit.textContent = suit;
+    // const cardRank = document.createElement('p');
+    // cardRank.className = 'card-rank';
+    // cardRank.textContent = rank;
+    //
+    // divCard.appendChild(cardRank);
+    // divCard.appendChild(cardSuit);
 
-    divCard.appendChild(cardRank);
-    divCard.appendChild(cardSuit);
+    //CARD IMAGES:
+    const divCard = document.createElement('img');
+    divCard.className = "card";
+    divCard.src = ("images/" + rank + "_of_" + suit + ".png").toLowerCase();
+    
 
     divCard.style.border = "1px solid black";
 
