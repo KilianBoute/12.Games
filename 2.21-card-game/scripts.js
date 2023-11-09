@@ -19,6 +19,14 @@ const dealerCards = [];
 let userTotal = 0;
 let dealerTotal = 0;
 
+// let dealerWantsHit = false;
+// let dealerWantsStand = false;
+// let dealerHasWon = false;
+// let dealerHasBust = false;
+
+statusList = ["new", "hit", "stand", "won", "bust"];
+dealerStatus = statusList[0];
+
 const generateCard = (suit, rank, value) => {
     const divCard = document.createElement('div');
     divCard.className = 'card';
@@ -83,20 +91,23 @@ const updateDealerCards = () => {
 }
 
 const resetGame = () => {
-    generateDeck();
-    shuffleDeck(deckList);
-    playerCards.length = 0;
+    divMessages.innerHTML = "";
     divPlayerCards.innerHTML = "";
-    document.querySelectorAll('button').forEach(btn => {
-        btn.disabled = false;
-    });
+    divDealerCards.innerHTML = "";
+    playerCards.length = 0;
+    dealerCards.length = 0;
+    btnDeal.disabled = false;
     btnHit.disabled = true;
+    btnStand.disabled = true;
     userTotal = 0;
     dealerTotal = 0; 
+    generateDeck();
+    shuffleDeck(deckList);
 }
 
 const checkIfWon = () => {
     const newMsg = document.createElement('p');
+    userTotal = 0;
     playerCards.forEach(card => {
         userTotal += card.value;
     });
@@ -104,42 +115,72 @@ const checkIfWon = () => {
         console.log('BLACKJACK');
         newMsg.textContent = "BLACKJACK";
         divMessages.appendChild(newMsg);
-        resetGame();
     } else if (userTotal > 21) {
         console.log('bust');
         newMsg.textContent = 'BUST';
         divMessages.appendChild(newMsg);
-        resetGame();
+        btnDeal.disabled = false;
+        btnHit.disabled = true;
+        btnStand.disabled = true;
     } else {
         console.log("keep playing " + userTotal);
     }
 }
 
+const stand = (player) => {
+    const newMsg = document.createElement('p');
+    newMsg.textContent = player + " stands."
+    divMessages.appendChild(newMsg);
+}
+
+//Dealer logic:
 const handleDealerTurn = () => {
     const newMsg = document.createElement('p');
+
     dealerCards.forEach(card => {
         dealerTotal += card.value;
     });
-    if(dealerTotal <= 11){
-        dealerCards.push(deckList.pop());
-        newMsg.textContent = "Dealer hits";
-    }
-    updateDealerCards();
-}
+    console.log(dealerTotal);
 
-const stand = (player) => {
-    const newMsg = document.createElement('p');
-    newMsg.textContent = player + " is standing."
-    divMessages.appendChild(newMsg);
-}
+    if(dealerTotal < 14 || dealerTotal < userTotal){
+        dealerStatus = statusList[1];
+    } else if(dealerTotal > 14 && dealerTotal < 21){
+        dealerStatus = statusList[2];
+    } else if(dealerTotal === 21){
+        dealerStatus = statusList[3];
+    } else if(dealerTotal > 21){
+        dealerStatus = statusList[4];
+    }
+    console.log(dealerStatus);
+} 
+
+// const handleDealerTurn = () => {
+//     const newMsg = document.createElement('p');
+
+//     dealerCards.forEach(card => {
+//         dealerTotal += card.value;
+//     });
+//     if(dealerTotal <= 14 || dealerTotal < userTotal){
+//         dealerCards.push(deckList.pop());
+//         handleDealerTurn();
+//         newMsg.textContent = "Dealer hits";
+//     } else if(dealerTotal < 21){
+//         stand("Dealer");
+//     } else if(dealerTotal === 21){
+//         newMsg.textContent = "DEALER HAS BLACKJACK";
+//         divMessages.appendChild(newMsg);
+//     }
+//     updateDealerCards();
+// }
+//
+
 
 //start of game:
 resetGame();
 
 
 btnDeal.addEventListener("click", () => {
-    divMessages.innerHTML = "";
-
+    resetGame();
     //Deal player cards
     playerCards.push(deckList.pop());
     playerCards.push(deckList.pop());
@@ -148,22 +189,30 @@ btnDeal.addEventListener("click", () => {
     dealerCards.push(deckList.pop());
     dealerCards.push(deckList.pop());
     updateDealerCards();
+// Optional add delay to dealer turn:
+//    setTimeout(() => {
+        handleDealerTurn();
+//    }, 3000);
    
     checkIfWon();
     btnDeal.disabled = true;
     btnHit.disabled = false;
+    btnStand.disabled = false;
 })
 
 btnHit.addEventListener('click', () => {
     playerCards.push(deckList.pop());
     updatePlayerCards();
-    handleDealerTurn();
+// Optional add delay to dealer turn:
+//    setTimeout(() => {
+        handleDealerTurn();
+//    }, 3000);
     checkIfWon();
 });
 
 btnStand.addEventListener('click', () => {
-    handleDealerTurn();
     stand("Player");
+    handleDealerTurn();
 });
 
 
