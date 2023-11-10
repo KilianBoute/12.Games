@@ -1,0 +1,80 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    width: 100vw;
+    height: 100vh;
+    text-align: center;
+
+    color: aliceblue;
+}
+main{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: rgb(67,68,53);
+    background: linear-gradient(180deg, rgb(0, 0, 0) 50%, rgb(5, 42, 14) 100%);
+}
+
+h1{
+    margin-bottom: 1rem;
+    border-bottom: 3px solid whitesmoke;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+  }
+  
+  .board {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(4, minmax(0, 1.3fr)); /* Each row is 1.4 times the height of the columns */
+    gap: 1rem;
+    height: 100%;
+    margin: 1rem;
+  }
+  
+  .card {
+    border: 1px solid black;
+    padding: 10px;
+    height: 100%;
+    width: 100%;
+    padding-top: 130%;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 5px;
+    transform-style: preserve-3d;
+    transition: all 0.5s ease-in-out;
+  }
+
+
+
+.flipped {
+    transform: rotateY(180deg);
+    background-image: url('images/flipped.png') !important;
+}
+  
+/* 
+.table{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(4, 1fr);   
+    gap: 10px; 
+}
+
+.card{
+    border: 1px solid black;
+    padding: 10px;
+    height: 100%;
+    width: calc(290px/3);
+    height: auto;
+    background-image: url('images/1.png');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+} */

@@ -42,7 +42,7 @@ const generateCard = (suit, rank, value) => {
     const divCard = document.createElement('img');
     divCard.className = "card";
     divCard.src = ("images/" + rank + "_of_" + suit + ".png").toLowerCase();
-    
+
 
     divCard.style.border = "1px solid black";
 
@@ -193,7 +193,7 @@ const setDealerStatus = () => {
     });
     dealerTotal = newTotal;
 
-    if (dealerTotal < 14 || dealerTotal < playerTotal) {
+    if (dealerTotal <= 14 || dealerTotal < playerTotal) {
         dealerStatus = statusList[1];
     } else if (dealerTotal > 14 && dealerTotal < 21) {
         dealerStatus = statusList[2];
