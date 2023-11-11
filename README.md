@@ -8,6 +8,6 @@ Web page links:
 1. Rock paper scissors: jolly-marshmallow-a8740f.netlify.app
 2. 21 card game: kiliancardgame.netlify.app
 
-3: Memory game: 
+3: Memory game: memorygamekilian.netlify.app
 
 4: Moving block game:

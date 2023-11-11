@@ -1,44 +1,50 @@
-*{
+@font-face {
+    font-family: "Pokemon";
+    src: url("pokemon/Pokemon\ Hollow.ttf");
+}
+
+* {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
-body{
+body {
     width: 100vw;
     height: 100vh;
     text-align: center;
-
+    font-family: "Pokemon";
     color: aliceblue;
 }
-main{
-    display: flex;
+
+main {
+    /* display: flex;
     flex-direction: column;
-    justify-content: center;
-    background: rgb(67,68,53);
-    background: linear-gradient(180deg, rgb(0, 0, 0) 50%, rgb(5, 42, 14) 100%);
+    justify-content: center; */
+    min-height: 100vh;
+    background: #F1000F;
+    background: linear-gradient(180deg, rgb(0, 0, 0) 50%, #F1000F);
+    padding-top: 1rem;
 }
 
-h1{
-    margin-bottom: 1rem;
-    border-bottom: 3px solid whitesmoke;
-}
+/* h1 {
+    margin-top: 1rem;
+} */
 
-html, body {
-    height: 100%;
-    margin: 0;
-  }
-  
-  .board {
+.board {
+    
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    grid-template-rows: repeat(4, minmax(0, 1.3fr)); /* Each row is 1.4 times the height of the columns */
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-rows: repeat(3, minmax(0, 1.3fr));
     gap: 1rem;
-    height: 100%;
-    margin: 1rem;
-  }
-  
-  .card {
+    margin: 1rem auto;
+    padding: 1rem;
+    border: 3px solid whitesmoke;
+    border-radius: 5px;
+    max-width: 800px;
+}
+
+.card {
     border: 1px solid black;
     padding: 10px;
     height: 100%;
@@ -47,34 +53,29 @@ html, body {
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
-    border-radius: 5px;
+    border-radius: 9px;
     transform-style: preserve-3d;
     transition: all 0.5s ease-in-out;
-  }
-
-
+}
 
 .flipped {
     transform: rotateY(180deg);
     background-image: url('images/flipped.png') !important;
 }
-  
-/* 
-.table{
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(4, 1fr);   
-    gap: 10px; 
+
+.flipped:hover {
+    cursor: pointer;
 }
 
-.card{
-    border: 1px solid black;
-    padding: 10px;
-    height: 100%;
-    width: calc(290px/3);
-    height: auto;
-    background-image: url('images/1.png');
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-} */
+#resetButton{
+    padding: 5px;
+    margin-bottom: 1rem;
+    background-color: aliceblue;
+    border-radius: 5px;
+    border: none;
+    margin-top: 1rem;
+}
+
+#resetButton:hover{
+    cursor: pointer;
+}

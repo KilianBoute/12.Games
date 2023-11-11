@@ -1,0 +1,39 @@
+@font-face {
+    font-family: "Tron";
+    src: url("tron-font/Tron-JOAa.ttf");
+}
+
+:root{
+    --background-color: #030504;
+    --board-color: #193F4B;
+    --border-color: #FFFFFE;
+    --player-color: #F5AF2E;
+    --enemy-color: #7EFDFE;
+}
+
+body{
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--background-color);
+    font-family: "Tron";
+}
+
+#board{
+    width: 100vmin;
+    height: 100vmin;
+    background-color: var(--board-color);
+    display: grid;
+    grid-template-columns: repeat(21, 1fr);
+    grid-template-rows: repeat(21, 1fr);
+}
+
+.player-block{
+    background-color: var(--player-color);
+}
+
+.enemy-block{
+    background-color: var(--enemy-color);
+}
