@@ -6,7 +6,7 @@
 :root{
     --background-color: #030504;
     --board-color: #002236;/* #193F4B; */
-    --gradient-color: linear-gradient(180deg, rgba(0,63,80,1) 0%, rgba(0,63,96,1) 50%, rgba(0,63,121,1) 100%);
+    --gradient-color: linear-gradient(180deg, #000024 0%, rgb(0, 10, 30) 50%, #000024 100%);
     --border-color: #FFFFFE;
     --player-color: #F5AF2E;
     --enemy-color: #7EFDFE;

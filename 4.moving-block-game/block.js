@@ -1,5 +1,5 @@
 import {getInputDirection} from './input.js'
-export const blockSpeed = 20;
+export const blockSpeed = 2;
 const blockBody = [{x: 11, y: 11}, {x: 11, y: 11}, {x: 11, y: 11}];
 let lifeCount = 3;
 
@@ -19,17 +19,17 @@ export const update = () => {
 } 
 
 export const draw = (board) => {
-    let i = 1;
+    let i = 0;
     blockBody.forEach(segment => {
         i++;
         const blockElement = document.createElement('div');
         blockElement.style.gridRowStart = segment.x;
         blockElement.style.gridColumnStart = segment.y;
         blockElement.classList.add('player-block');
-        if(i%3 === 0){
+        if(i === 2){
             blockElement.classList.add('faded-one')
         }
-        if(i%3 === 1){
+        if(i === 3){
             blockElement.classList.add('faded-two');
         }
         board.appendChild(blockElement);
@@ -42,12 +42,10 @@ export const decreaseLifeCount = () => {
 
 export const gameOver = () => {
     return lifeCount === 0;
-     
 }
 
 export const onBlock = (positions) => {
     return positions.some(element => {
-        console.log(equalPositions(element, blockBody[0]));
         return equalPositions(element, blockBody[0]);
     });
 }
