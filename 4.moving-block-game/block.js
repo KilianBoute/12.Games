@@ -1,11 +1,10 @@
 import {getInputDirection} from './input.js'
-export const blockSpeed = 2;
+export const blockSpeed = 6;
 const blockBody = [{x: 11, y: 11}, {x: 11, y: 11}];
-
+let lifeCount = 3;
 
 export const update = () => {
     const inputDirection = getInputDirection();
-    console.log('update block');
     for (let i = blockBody.length - 2; i >= 0; i--){
         blockBody[i + 1] = {...blockBody[i]};
     }
@@ -14,8 +13,7 @@ export const update = () => {
     blockBody[0].y += inputDirection.y;
 } 
 
-export const draw = () => {
-    console.log('draw block');
+export const draw = (board) => {
     let i = 1;
     blockBody.forEach(segment => {
         i++;
@@ -26,9 +24,21 @@ export const draw = () => {
         if(i%2 === 1){
             blockElement.classList.add('faded');
         }
-        console.log(blockElement.classList)
         board.appendChild(blockElement);
     });
-    
-      
+}
+
+export const decreaseLifeCount = () => {
+    lifeCount--;
+}
+
+export const onBlock = (positions) => {
+    return positions.some(element => {
+        console.log(equalPositions(element, blockBody[0]));
+        return equalPositions(element, blockBody[0]);
+    });
+}
+
+const equalPositions = (pos1, pos2) => {
+    return (pos1.x === pos2.x && pos1.y === pos2.y)
 }
