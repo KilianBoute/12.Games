@@ -12,6 +12,7 @@ export const update = () => {
     blockBody[0].x += inputDirection.x;
     blockBody[0].y += inputDirection.y;
 
+    //prevent block from leaving board:
     if(blockBody[0].x > 21) blockBody[0].x -= 21;
     if(blockBody[0].y > 21) blockBody[0].y -= 21;
     if(blockBody[0].x < 1) blockBody[0].x += 21;
