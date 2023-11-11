@@ -1,6 +1,6 @@
 import {getInputDirection} from './input.js'
-export const blockSpeed = 10;
-const blockBody = [{x: 11, y: 11}, {x: 11, y: 11}];
+export const blockSpeed = 20;
+const blockBody = [{x: 11, y: 11}, {x: 11, y: 11}, {x: 11, y: 11}];
 let lifeCount = 3;
 
 export const update = () => {
@@ -26,8 +26,11 @@ export const draw = (board) => {
         blockElement.style.gridRowStart = segment.x;
         blockElement.style.gridColumnStart = segment.y;
         blockElement.classList.add('player-block');
-        if(i%2 === 1){
-            blockElement.classList.add('faded');
+        if(i%3 === 0){
+            blockElement.classList.add('faded-one')
+        }
+        if(i%3 === 1){
+            blockElement.classList.add('faded-two');
         }
         board.appendChild(blockElement);
     });
