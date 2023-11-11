@@ -21,5 +21,6 @@ const update = () => {
 } 
 
 const draw = () => {
+    board.innerHTML = "";
     drawBlock(board);
 }
