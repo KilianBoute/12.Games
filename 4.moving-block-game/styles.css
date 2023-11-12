@@ -16,6 +16,7 @@
 body{
     height: 90vh;
     width: 90vw;
+    margin-top: 3rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -26,13 +27,19 @@ body{
 }
 
 #board{
-    width: 90vmin;
-    height: 90vmin;
+    width: 80vmin;
+    height: 80vmin;
     background-color: var(--board-color);
     background: var(--gradient-color);
     display: grid;
     grid-template-columns: repeat(21, 1fr);
     grid-template-rows: repeat(21, 1fr);
+    box-shadow:  0px 0px 10px rgba(0,0,0), 10px 10px 500px -40px var(--enemy-color);
+}
+
+.container-start{
+    grid-area:  11/ 1 / 11 / 22;
+    text-align: center;
 }
 
 .player-block{
@@ -50,3 +57,20 @@ body{
 .faded-two{
     opacity: 0.2;
 }
+
+#status-bar{
+    width: 80vmin;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.blink {
+    animation: blinker 1s linear infinite;
+}
+  
+  @keyframes blinker {
+    50% {
+      opacity: 0;
+    }
+  }
